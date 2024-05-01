@@ -1,5 +1,6 @@
 use crate::models::comic::*;
 use async_trait::async_trait;
+use serde::Deserialize;
 
 #[async_trait]
 pub trait Source: Send + Sync {
@@ -14,4 +15,13 @@ pub trait Source: Send + Sync {
     async fn get_info(&self, comic: &Comic) -> reqwest::Result<Option<ComicInfo>>;
 
     fn name(&self) -> &'static str;
+
+    fn clone_dyn(&self) -> Box<dyn Source>;
 }
+
+impl Clone for Box<dyn Source> {
+    fn clone(&self) -> Self {
+        self.clone_dyn()
+    }
+}
+
