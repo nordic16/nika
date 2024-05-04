@@ -1,4 +1,6 @@
-#[derive(Clone, Debug)]
+use serde::Deserialize;
+
+#[derive(Clone, Deserialize)]
 pub struct Comic {
     name: String,
     source: String,

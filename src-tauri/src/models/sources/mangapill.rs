@@ -6,7 +6,7 @@ use crate::models::comic::{Chapter, Comic, ComicInfo};
 use crate::traits::Source;
 use crate::CLIENT;
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct MangapillSource;
 
 #[async_trait]

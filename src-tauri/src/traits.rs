@@ -1,9 +1,10 @@
+use std::fmt::Debug;
+
 use crate::models::comic::*;
 use async_trait::async_trait;
-use serde::Deserialize;
 
 #[async_trait]
-pub trait Source: Send + Sync {
+pub trait Source: Send + Sync + Debug {
     /// Returns a list of search results based on query
     async fn search(&self, query: &str) -> reqwest::Result<Vec<Comic>>;
 
