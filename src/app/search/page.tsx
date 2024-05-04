@@ -3,8 +3,6 @@ import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from 
 import { montserrat } from '../ui/fonts';
 import { invoke } from '@tauri-apps/api/tauri';
 
-
-
 export default function Search() {
   const [sources, set_sources] = useState(['']);
   const [sel_source, set_sel_source] = useState('');
@@ -13,7 +11,9 @@ export default function Search() {
     var elem = event.currentTarget.value;
 
     if (elem.length !== 0) {
-      invoke('test', { msg: elem });
+      invoke('search', { query: elem, source: sel_source }).then(values => {
+        console.log(values)
+      }).catch(e => console.log(e));
     }
   } 
 
@@ -24,11 +24,10 @@ export default function Search() {
     console.log(`Set source to ${sources[index]}!`);
   }
   
-
   useEffect(() => {
     invoke('get_sources').then((values) => {
-      console.log(values);
       let arr = JSON.parse(JSON.stringify(values)) as string[];
+      set_sel_source(arr[0])
       set_sources(arr);
     });
   }, []);

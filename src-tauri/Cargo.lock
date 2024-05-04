@@ -74,6 +74,7 @@ dependencies = [
  "soup",
  "tauri",
  "tauri-build",
+ "thiserror",
 ]
 
 [[package]]

@@ -5,7 +5,7 @@ pub mod commands;
 pub mod models;
 pub mod traits;
 
-use commands::search::test;
+use commands::search;
 use lazy_static::lazy_static;
 use reqwest::{Client, ClientBuilder};
 
@@ -20,7 +20,7 @@ lazy_static! {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![test, get_sources])
+        .invoke_handler(tauri::generate_handler![search, get_sources])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
