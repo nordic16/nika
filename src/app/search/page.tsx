@@ -1,20 +1,23 @@
 'use client' 
-import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { montserrat } from '../ui/fonts';
 import { invoke } from '@tauri-apps/api/tauri';
+import comic_component, { Comic } from '../models/comic';
 
 export default function Search() {
   const [sources, set_sources] = useState(['']);
   const [sel_source, set_sel_source] = useState('');
+  const [results, set_results] = useState(Array<Comic>)
 
   function handle_search_input(event: FormEvent<HTMLInputElement>) {
     var elem = event.currentTarget.value;
 
-    if (elem.length !== 0) {
-      invoke('search', { query: elem, source: sel_source }).then(values => {
-        console.log(values)
-      }).catch(e => console.log(e));
-    }
+    
+    invoke('search', { query: elem, source: sel_source }).then(values => {
+      let arr = JSON.parse(JSON.stringify(values)) as Comic[];
+      set_results(arr);
+
+    }).catch(e => console.log(e));
   } 
 
   function handle_source_change(evt: ChangeEvent<HTMLSelectElement>) {
@@ -32,10 +35,20 @@ export default function Search() {
     });
   }, []);
 
-  let options = <select id="sources" onChange={handle_source_change}>
+  let options = <select className='text-black p-1' onChange={handle_source_change}>
     {sources.map((el, index) => <option key={index}>{el}</option>)};
-    <option>test</option>
   </select>;
+
+
+  let results_div = null;
+
+  if (results.length !== 0) {
+    results_div = <div className='mt-2 bg-nika-secondary p-8 rounded-3xl'>
+      <div className='grid grid-cols-4 gap-4 overflow-auto max-h-100'>
+        {results.map(r => comic_component(r))}
+      </div>
+    </div>;
+  }
 
   return (
     <div className="md:container mx-auto">
@@ -45,6 +58,7 @@ export default function Search() {
         <div className="mt-2">
           <label className="mr-3">Choose source</label>
           {options}
+          {results_div}
         </div>
       </div>
     </div>

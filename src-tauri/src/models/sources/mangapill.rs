@@ -2,6 +2,7 @@ use crate::models::comic::{Chapter, Comic, ComicInfo};
 use crate::traits::Source;
 use crate::CLIENT;
 use async_trait::async_trait;
+use regex::Regex;
 use soup::{NodeExt, QueryBuilderExt, Soup};
 
 #[derive(Default, Clone, Debug)]
@@ -30,7 +31,7 @@ impl Source for MangapillSource {
         let mut mangas: Vec<Comic> = Vec::with_capacity(manga_src.len());
 
         for i in manga_src {
-            // didn't use functional programming here because code was too long
+            // didn't use iterators here because code was too long
             let name = i
                 .class("leading-tight")
                 .find()
@@ -39,13 +40,18 @@ impl Source for MangapillSource {
 
             let tmp = i.tag("a").find();
             let base_url = self.base_url();
+            let img = i.tag("img").find().unwrap().get("data-src").unwrap();
 
             match tmp {
                 Some(e) => {
+                    let regex = Regex::new("[0-9]+").unwrap();
+
                     let tmp = e.get("href").unwrap();
                     let source = format!("{base_url}{tmp}");
+                    let id = regex.find(&source).unwrap()
+                        .as_str().parse::<u32>().unwrap();
 
-                    mangas.push(Comic::new(&name, &source));
+                    mangas.push(Comic::new(&name, &source, id, &img));
                 }
                 None => continue,
             }

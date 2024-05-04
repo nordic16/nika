@@ -4,13 +4,17 @@ use serde::{Deserialize, Serialize};
 pub struct Comic {
     name: String,
     source: String,
+    id: u32,
+    img_source: String
 }
 
 impl Comic {
-    pub fn new(name: &str, source: &str) -> Self {
+    pub fn new(name: &str, source: &str, id: u32, img_source: &str) -> Self {
         Self {
             name: name.to_owned(),
             source: source.to_owned(),
+            id,
+            img_source: img_source.to_owned()
         }
     }
 }
