@@ -10,7 +10,7 @@ impl Comic {
     pub fn new(name: &str, source: &str) -> Self {
         Self {
             name: name.to_owned(),
-            source: source.to_owned()
+            source: source.to_owned(),
         }
     }
 }
@@ -25,7 +25,7 @@ impl Chapter {
     pub fn new(name: &str, source: &str) -> Self {
         Self {
             name: name.to_owned(),
-            source: source.to_owned()
+            source: source.to_owned(),
         }
     }
 }
@@ -47,4 +47,3 @@ impl ComicInfo {
         }
     }
 }
-

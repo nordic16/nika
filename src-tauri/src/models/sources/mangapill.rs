@@ -1,10 +1,8 @@
-
-
-use async_trait::async_trait;
-use soup::{NodeExt, QueryBuilderExt, Soup};
 use crate::models::comic::{Chapter, Comic, ComicInfo};
 use crate::traits::Source;
 use crate::CLIENT;
+use async_trait::async_trait;
+use soup::{NodeExt, QueryBuilderExt, Soup};
 
 #[derive(Default, Clone, Debug)]
 pub struct MangapillSource;

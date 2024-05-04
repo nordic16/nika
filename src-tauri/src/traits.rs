@@ -25,4 +25,3 @@ impl Clone for Box<dyn Source> {
         self.clone_dyn()
     }
 }
-
