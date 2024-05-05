@@ -5,16 +5,20 @@ pub struct Comic {
     name: String,
     source: String,
     id: u32,
-    img_source: String
+    img_source: String,
+
+    /// Url for used source.
+    source_url: String
 }
 
 impl Comic {
-    pub fn new(name: &str, source: &str, id: u32, img_source: &str) -> Self {
+    pub fn new(name: &str, source: &str, id: u32, img_source: &str, source_url: &str) -> Self {
         Self {
             name: name.to_owned(),
             source: source.to_owned(),
             id,
-            img_source: img_source.to_owned()
+            img_source: img_source.to_owned(),
+            source_url: source_url.to_owned()
         }
     }
 }

@@ -51,7 +51,7 @@ impl Source for MangapillSource {
                     let id = regex.find(&source).unwrap()
                         .as_str().parse::<u32>().unwrap();
 
-                    mangas.push(Comic::new(&name, &source, id, &img));
+                    mangas.push(Comic::new(&name, &source, id, &img, self.base_url()));
                 }
                 None => continue,
             }

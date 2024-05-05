@@ -39,7 +39,6 @@ export default function Search() {
     {sources.map((el, index) => <option key={index}>{el}</option>)};
   </select>;
 
-
   let results_div = null;
 
   if (results.length !== 0) {
@@ -52,9 +51,11 @@ export default function Search() {
 
   return (
     <div className="md:container mx-auto">
-      <p className={`${montserrat.className} text-5xl font-bold mb-10`}>Nika - Search Page</p> 
+      <div className='flex justify-between align-middle'>
+          <p className={`${montserrat.className} text-5xl font-bold mb-10`}>Nika - Search Page</p> 
+          <input onInput={handle_search_input} className="bg-nika-secondary max-h-8 pl-2 rounded-3xl" placeholder="Search Comics..."></input>
+        </div>
       <div className="ml-2 w-full text-center">
-        <input id="search-box" onInput={handle_search_input} className="bg-nika-secondary w-10/12 text-center rounded-3xl py-4 text-2xl w-full" placeholder="Search Comics..."></input>
         <div className="mt-2">
           <label className="mr-3">Choose source</label>
           {options}
