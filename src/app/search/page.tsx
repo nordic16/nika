@@ -4,15 +4,17 @@ import { montserrat } from '../ui/fonts';
 import { invoke } from '@tauri-apps/api/tauri';
 import comic_component, { Comic } from '../models/comic';
 
+const COMICS_DISPLAYED = 12;
+
 export default function Search() {
   const [sources, set_sources] = useState(['']);
   const [sel_source, set_sel_source] = useState('');
+  const [page, set_page] = useState(1);
   const [results, set_results] = useState(Array<Comic>)
 
   function handle_search_input(event: FormEvent<HTMLInputElement>) {
     var elem = event.currentTarget.value;
 
-    
     invoke('search', { query: elem, source: sel_source }).then(values => {
       let arr = JSON.parse(JSON.stringify(values)) as Comic[];
       set_results(arr);
@@ -21,12 +23,24 @@ export default function Search() {
   } 
 
   function handle_source_change(evt: ChangeEvent<HTMLSelectElement>) {
-    const index = evt.target.selectedIndex;
+    const index = evt.target.selectedIndex; // Due to the disabled field.
     set_sel_source(sources[index]);
 
     console.log(`Set source to ${sources[index]}!`);
   }
-  
+
+  function get_shown_results() : Comic[] {
+    const start = (page - 1) * COMICS_DISPLAYED;
+    return results.slice(start, start + COMICS_DISPLAYED);
+  }
+
+  function change_to_page(page: number) {
+    if (page > Math.ceil(results.length / COMICS_DISPLAYED) || page <= 0) {
+      return;
+    } 
+    set_page(page);
+  }
+
   useEffect(() => {
     invoke('get_sources').then((values) => {
       let arr = JSON.parse(JSON.stringify(values)) as string[];
@@ -36,31 +50,39 @@ export default function Search() {
   }, []);
 
   let options = <select className='text-black p-1' onChange={handle_source_change}>
-    {sources.map((el, index) => <option key={index}>{el}</option>)};
+    {sources.slice().map((el, index) => <option key={index}>{el}</option>)};
   </select>;
 
   let results_div = null;
 
   if (results.length !== 0) {
+    let comics = get_shown_results();
+
     results_div = <div className='mt-2 bg-nika-secondary p-8 rounded-3xl'>
       <div className='grid grid-cols-4 gap-4 overflow-auto max-h-100'>
-        {results.map(r => comic_component(r))}
+        {comics.map(r => comic_component(r))}
+      </div>
+      <div className='flex gap-8 w-full justify-between mt-6'>
+        <button id='-1' onClick={() => change_to_page(page - 1)} className='text-2xl font-semibold transition ease-in-out hover:text-nika-selected-primary'>Previous</button>
+        <p className='mt-2 font-semibold text-center text-xl'>({page})</p>       
+        <button id='1' onClick={() => change_to_page(page + 1)} className='text-2xl font-semibold transition ease-in-out hover:text-nika-selected-primary'>Next</button>    
       </div>
     </div>;
   }
 
   return (
     <div className="md:container mx-auto">
-      <div className='flex justify-between align-middle'>
-          <p className={`${montserrat.className} text-5xl font-bold mb-10`}>Nika - Search Page</p> 
-          <input onInput={handle_search_input} className="bg-nika-secondary max-h-8 pl-2 rounded-3xl" placeholder="Search Comics..."></input>
+      <div className='flex justify-between items-center'>
+        <p className={`${montserrat.className} text-5xl font-bold mb-10`}>Nika - Search Page</p> 
+        <div className='gap-2 items-center'>
+          <input onInput={handle_search_input} className="bg-nika-secondary max-h-12 pl-2 text-lg rounded-xl" placeholder="Search Comics..."></input>
+          {options}
         </div>
+      </div>
       <div className="ml-2 w-full text-center">
         <div className="mt-2">
-          <label className="mr-3">Choose source</label>
-          {options}
           {results_div}
-        </div>
+        </div>  
       </div>
     </div>
   )
