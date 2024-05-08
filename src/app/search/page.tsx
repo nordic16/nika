@@ -18,6 +18,7 @@ export default function Search() {
     invoke('search', { query: elem, source: sel_source }).then(values => {
       let arr = JSON.parse(JSON.stringify(values)) as Comic[];
       set_results(arr);
+      load_page(1);
 
     }).catch(e => console.log(e));
   } 
@@ -34,7 +35,7 @@ export default function Search() {
     return results.slice(start, start + COMICS_DISPLAYED);
   }
 
-  function change_to_page(page: number) {
+  function load_page(page: number) {
     if (page > Math.ceil(results.length / COMICS_DISPLAYED) || page <= 0) {
       return;
     } 
@@ -63,9 +64,9 @@ export default function Search() {
         {comics.map(r => comic_component(r))}
       </div>
       <div className='flex gap-8 w-full justify-between mt-6'>
-        <button id='-1' onClick={() => change_to_page(page - 1)} className='text-2xl font-semibold transition ease-in-out hover:text-nika-selected-primary'>Previous</button>
-        <p className='mt-2 font-semibold text-center text-xl'>({page})</p>       
-        <button id='1' onClick={() => change_to_page(page + 1)} className='text-2xl font-semibold transition ease-in-out hover:text-nika-selected-primary'>Next</button>    
+        <button id='-1' onClick={() => load_page(page - 1)} className='text-2xl font-semibold transition ease-in-out hover:text-nika-selected-primary'>Previous</button>
+        <p className='mt-2 font-semibold text-center text-xl'>Page {page} of {Math.ceil(results.length / COMICS_DISPLAYED)}</p>       
+        <button id='1' onClick={() => load_page(page + 1)} className='text-2xl font-semibold transition ease-in-out hover:text-nika-selected-primary'>Next</button>    
       </div>
     </div>;
   }

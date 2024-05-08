@@ -18,6 +18,9 @@ pub trait Source: Send + Sync + Debug {
     fn name(&self) -> &'static str;
 
     fn clone_dyn(&self) -> Box<dyn Source>;
+
+    /// Returns the full path for the downloaded poster. 
+    async fn download_poster(&self, comic: &Comic) -> reqwest::Result<String>;
 }
 
 impl Clone for Box<dyn Source> {

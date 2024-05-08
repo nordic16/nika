@@ -5,10 +5,10 @@ pub struct Comic {
     name: String,
     source: String,
     id: u32,
-    img_source: String,
+    pub(super) poster_url: String,
 
     /// Url for used source.
-    source_url: String
+    pub(super) source_url: String
 }
 
 impl Comic {
@@ -17,7 +17,7 @@ impl Comic {
             name: name.to_owned(),
             source: source.to_owned(),
             id,
-            img_source: img_source.to_owned(),
+            poster_url: img_source.to_owned(),
             source_url: source_url.to_owned()
         }
     }

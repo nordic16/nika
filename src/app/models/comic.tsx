@@ -5,7 +5,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 export interface Comic {
     name: string,
     source_url: string,
-    img_source: string,
+    poster_url: string,
     id: number,
     
 }

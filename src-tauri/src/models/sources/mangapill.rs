@@ -1,3 +1,7 @@
+use std::fs::File;
+use std::io::Write;
+use std::{fs, io};
+
 use crate::models::comic::{Chapter, Comic, ComicInfo};
 use crate::traits::Source;
 use crate::CLIENT;
@@ -78,5 +82,30 @@ impl Source for MangapillSource {
 
     fn clone_dyn(&self) -> Box<dyn Source> {
         Box::new(self.clone())
+    }
+
+    async fn download_poster(&self, comic: &Comic) -> reqwest::Result<String> {
+        let mut response = CLIENT.get(&comic.poster_url).header("Referer", self.base_url()).send().await?;
+        let mut f: File = File::create("tmp.jpeg").unwrap();
+        
+        while let Some(chunk) = response.chunk().await?  {
+            f.write_all(&chunk).unwrap();
+        }
+
+        Ok(String::from("tmp.jpeg"))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::{models::sources::mangapill::MangapillSource, traits::Source};
+
+    #[tokio::test]
+    async fn test_download_poster() {
+        let source = MangapillSource::default();
+        let comics = source.search("one piece").await.unwrap();
+        let comic = &comics[0];
+
+        source.download_poster(&comic).await.unwrap();
     }
 }
