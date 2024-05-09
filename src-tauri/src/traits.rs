@@ -27,14 +27,15 @@ pub trait Source: Send + Sync + Debug {
 
         let name = comic.name().replace(' ', "_");
         let fname = cache_dir.join(format!("nika/posters/{}/{}_poster.jpeg", self.name(), &name));
-
-        println!("{}", fname.display());
-        let mut f: File = File::create(fname).unwrap();
         
-        while let Some(chunk) = response.chunk().await?  {
-            f.write_all(&chunk).unwrap();
+        if !fname.exists() {
+            let mut f: File = File::create(fname).unwrap();
+            
+            while let Some(chunk) = response.chunk().await?  {
+                f.write_all(&chunk).unwrap();
+            }
         }
-
+        
         Ok(String::from("tmp.jpeg"))
     }
 }
