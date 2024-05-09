@@ -1,10 +1,15 @@
+use std::io;
+
 use thiserror::Error;
 use crate::{models::comic::Comic, SOURCES};
 
 #[derive(Error, Debug)]
 pub enum Errors {
-    #[error("networking error.")]
-    RequestError(#[from] reqwest::Error)
+    #[error("Networking Error.")]
+    RequestError(#[from] reqwest::Error),
+
+    #[error("IO Error.")]
+    IOError(#[from] io::Error)
 }
 
 // we must manually implement serde::Serialize
@@ -25,6 +30,21 @@ pub async fn search(query: String, source: String) -> NikaError<Vec<Comic>> {
     let source = SOURCES.iter().find(|f| f.name().to_lowercase() == source.to_lowercase()).unwrap();
     let results = source.search(&query).await?;
 
+    let results_2 = results.clone();
+
+    // Posters will be downloaded concurrently.
+    for result in results_2 {
+      tauri::async_runtime::spawn(async move {
+        source.download_poster(&result).await.unwrap();
+      });
+    }
+
+
     Ok(results)
 }
 
+
+#[tauri::command]
+pub fn get_sources() -> Vec<String> {
+    SOURCES.iter().map(|f| f.name().to_owned()).collect()
+}

@@ -5,7 +5,7 @@ pub struct Comic {
     name: String,
     source: String,
     id: u32,
-    pub(super) poster_url: String,
+    pub(crate) poster_url: String,
 
     /// Url for used source.
     pub(super) source_url: String
@@ -20,6 +20,10 @@ impl Comic {
             poster_url: img_source.to_owned(),
             source_url: source_url.to_owned()
         }
+    }
+
+    pub fn name<'a>(&'a self) -> &'a str {
+        &self.name
     }
 }
 

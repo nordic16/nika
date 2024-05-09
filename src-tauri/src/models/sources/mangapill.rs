@@ -83,17 +83,6 @@ impl Source for MangapillSource {
     fn clone_dyn(&self) -> Box<dyn Source> {
         Box::new(self.clone())
     }
-
-    async fn download_poster(&self, comic: &Comic) -> reqwest::Result<String> {
-        let mut response = CLIENT.get(&comic.poster_url).header("Referer", self.base_url()).send().await?;
-        let mut f: File = File::create("tmp.jpeg").unwrap();
-        
-        while let Some(chunk) = response.chunk().await?  {
-            f.write_all(&chunk).unwrap();
-        }
-
-        Ok(String::from("tmp.jpeg"))
-    }
 }
 
 #[cfg(test)]

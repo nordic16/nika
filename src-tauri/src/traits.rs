@@ -1,7 +1,8 @@
-use std::fmt::Debug;
+use std::{fmt::Debug, fs::{create_dir, File}, io::Write};
 
-use crate::models::comic::*;
+use crate::{models::comic::*, CLIENT};
 use async_trait::async_trait;
+use tauri::api::path::cache_dir;
 
 #[async_trait]
 pub trait Source: Send + Sync + Debug {
@@ -19,8 +20,23 @@ pub trait Source: Send + Sync + Debug {
 
     fn clone_dyn(&self) -> Box<dyn Source>;
 
-    /// Returns the full path for the downloaded poster. 
-    async fn download_poster(&self, comic: &Comic) -> reqwest::Result<String>;
+    /// Returns the full path for the downloaded poster.
+    async fn download_poster(&self, comic: &Comic) -> reqwest::Result<String> {
+        let mut response = CLIENT.get(&comic.poster_url).header("Referer", self.base_url()).send().await?;
+        let cache_dir = cache_dir().unwrap();
+
+        let name = comic.name().replace(' ', "_");
+        let fname = cache_dir.join(format!("nika/posters/{}/{}_poster.jpeg", self.name(), &name));
+
+        println!("{}", fname.display());
+        let mut f: File = File::create(fname).unwrap();
+        
+        while let Some(chunk) = response.chunk().await?  {
+            f.write_all(&chunk).unwrap();
+        }
+
+        Ok(String::from("tmp.jpeg"))
+    }
 }
 
 impl Clone for Box<dyn Source> {

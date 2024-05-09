@@ -4,8 +4,10 @@
 pub mod commands;
 pub mod models;
 pub mod traits;
+mod app;
 
-use commands::search;
+use crate::commands::NikaError;
+use app::App;
 use lazy_static::lazy_static;
 use reqwest::{Client, ClientBuilder};
 
@@ -18,14 +20,7 @@ lazy_static! {
   pub static ref SOURCES: Vec<Box<dyn Source>> = vec![Box::<MangapillSource>::default()];
 }
 
-fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![search, get_sources])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
-}
-
-#[tauri::command]
-fn get_sources() -> Vec<String> {
-    SOURCES.iter().map(|f| f.name().to_owned()).collect()
+fn main() -> NikaError<()> {
+    let app = App::default();
+    app.run()
 }
