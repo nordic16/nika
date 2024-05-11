@@ -18,11 +18,11 @@ export default function Search() {
     const comics = get_shown_results();
 
     // Downloads posters for displayed comics...
-    for (const comic in comics) {
+    comics.forEach(comic => {
       invoke('download_poster', { comic: comic, source_name: sel_source }).then(path => {
         console.log(path);
       }).catch(e => console.log(e));
-    }
+    });
   }
 
   function handle_search_input(event: FormEvent<HTMLInputElement>) {
