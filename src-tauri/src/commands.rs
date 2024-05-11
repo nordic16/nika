@@ -33,12 +33,14 @@ pub async fn search(query: String, source: String) -> NikaError<Vec<Comic>> {
     let results_2 = results.clone();
 
     // Posters will be downloaded concurrently.
+    
+    /*
     for result in results_2 {
       tauri::async_runtime::spawn(async move {
         source.download_poster(&result).await.unwrap();
       });
     }
-
+    */
 
     Ok(results)
 }
@@ -47,4 +49,12 @@ pub async fn search(query: String, source: String) -> NikaError<Vec<Comic>> {
 #[tauri::command]
 pub fn get_sources() -> Vec<String> {
     SOURCES.iter().map(|f| f.name().to_owned()).collect()
+}
+
+#[tauri::command(rename_all = "snake_case")]
+pub async fn download_poster(comic: Comic, source_name: String) -> NikaError<String> {
+  let results : Vec<_> = SOURCES.iter().filter(|f| f.name().to_lowercase() == source_name.to_lowercase()).collect();
+  let source = &results[0];
+
+  source.download_poster(&comic).await
 }

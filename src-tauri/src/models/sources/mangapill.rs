@@ -1,7 +1,4 @@
-use std::fs::File;
-use std::io::Write;
-use std::{fs, io};
-
+use crate::commands::NikaError;
 use crate::models::comic::{Chapter, Comic, ComicInfo};
 use crate::traits::Source;
 use crate::CLIENT;
@@ -14,7 +11,7 @@ pub struct MangapillSource;
 
 #[async_trait]
 impl Source for MangapillSource {
-    async fn search(&self, query: &str) -> reqwest::Result<Vec<Comic>> {
+    async fn search(&self, query: &str) -> NikaError<Vec<Comic>> {
         let url = format!("{}/search?q={query}", self.base_url());
         let body = CLIENT.get(url).send().await?.text().await?;
         let soup = Soup::new(&body);
@@ -68,11 +65,11 @@ impl Source for MangapillSource {
         "https://mangapill.com"
     }
 
-    async fn get_chapters(&self, comic: &Comic) -> reqwest::Result<Vec<Chapter>> {
+    async fn get_chapters(&self, comic: &Comic) -> NikaError<Vec<Chapter>> {
         todo!()
     }
 
-    async fn get_info(&self, comic: &Comic) -> reqwest::Result<Option<ComicInfo>> {
+    async fn get_info(&self, comic: &Comic) -> NikaError<Option<ComicInfo>> {
         todo!()
     }
 

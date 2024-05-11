@@ -9,8 +9,21 @@ const COMICS_DISPLAYED = 12;
 export default function Search() {
   const [sources, set_sources] = useState(['']);
   const [sel_source, set_sel_source] = useState('');
-  const [page, set_page] = useState(1);
+  const [page, s_page] = useState(1);
   const [results, set_results] = useState(Array<Comic>)
+
+  function set_page(page: number) {
+    s_page(page);
+
+    const comics = get_shown_results();
+
+    // Downloads posters for displayed comics...
+    for (const comic in comics) {
+      invoke('download_poster', { comic: comic, source_name: sel_source }).then(path => {
+        console.log(path);
+      }).catch(e => console.log(e));
+    }
+  }
 
   function handle_search_input(event: FormEvent<HTMLInputElement>) {
     var elem = event.currentTarget.value;
