@@ -18,9 +18,9 @@ export default function Search() {
     const comics = get_shown_results();
 
     // Downloads posters for displayed comics...
-    comics.forEach(comic => {
+    comics.map((comic, i) => {
       invoke('download_poster', { comic: comic, source_name: sel_source }).then(path => {
-        console.log(path);
+        results[i].poster_path = path as string;
       }).catch(e => console.log(e));
     });
   }

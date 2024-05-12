@@ -30,11 +30,11 @@ pub async fn search(query: String, source: String) -> NikaError<Vec<Comic>> {
     let source = SOURCES.iter().find(|f| f.name().to_lowercase() == source.to_lowercase()).unwrap();
     let results = source.search(&query).await?;
 
-    let results_2 = results.clone();
-
     // Posters will be downloaded concurrently.
     
     /*
+    let results_2: Vec<Comic> = results.clone();
+
     for result in results_2 {
       tauri::async_runtime::spawn(async move {
         source.download_poster(&result).await.unwrap();

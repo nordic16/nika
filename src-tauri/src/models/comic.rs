@@ -9,7 +9,7 @@ pub struct Comic {
 }
 
 impl Comic {
-    pub fn new(name: &str, source: &str, id: u32, img_source: &str, source_url: &str) -> Self {
+    pub fn new(name: &str, source: &str, id: u32, img_source: &str) -> Self {
         Self {
             name: name.to_owned(),
             source: source.to_owned(),
