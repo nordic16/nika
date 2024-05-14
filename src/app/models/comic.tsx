@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { montserrat } from '../ui/fonts'
 import { invoke } from '@tauri-apps/api/tauri';
 
@@ -12,17 +13,22 @@ export interface Comic {
 
 export default function ComicComponent({comic}) {  
     const [img, set_img] = useState('');
+    const regex = new RegExp("^.+?[^\/:](?=[?\/]|$)");
+    let referer = regex.exec(comic.source)![0];
+    const headers = {'Referer' : referer};
+
     useEffect(() => {
         async function fetch_data() {
-            const regex = new RegExp("^.+?[^\/:](?=[?\/]|$)");
-            let referer = regex.exec(comic.source)![0];
-            console.log(referer);
+            const response = await fetch(comic.poster_url, {
+                method: 'GET',
+                headers: headers,
+                responseType: ResponseType.Binary,  
+            });
 
-            const headers = {'headers' : {'Referer' : referer}}
-            const response = await fetch(comic.poster_url, headers);
-            const img = URL.createObjectURL(await response.blob());
+            const data = Buffer.from(response.data as string, 'base64');
+            
 
-            set_img(img);
+            set_img(data.toString());
         }
         fetch_data();
     }, []);
@@ -30,7 +36,7 @@ export default function ComicComponent({comic}) {
     return(
         <div className='relative' key={comic.id}>
             <p className='truncate max-w-64'>{comic.name}</p>
-            <img src={img}></img>
+            <img src={img} />
         </div>
     );
 }

@@ -12,7 +12,24 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "http": {
+        "all": true, 
+        "request": true,
+        "scope": ["https://cdn.readdetectiveconan.com/*"]
+      },
+      "fs": {
+        "all": true, 
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true,
+        "scope": ["$TEMP/*", "var/*"]
+      }
     },
     "bundle": {
       "active": true,
