@@ -28,7 +28,15 @@
         "removeFile": true,
         "renameFile": true,
         "exists": true,
-        "scope": ["$TEMP/*", "var/*"]
+        "scope": ["$TEMP/posters/*", "var/*"]
+      },
+      "os": {
+        "all": true
+      },
+      "protocol": {
+        "all": true,
+        "asset": true,
+        "assetScope": ["$TEMP/posters/*"]
       }
     },
     "bundle": {
@@ -65,7 +73,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "updater": {
       "active": false

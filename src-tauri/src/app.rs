@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::fs::create_dir_all;
+use std::{fs::{create_dir, create_dir_all}, path::Path};
 
 use tauri::api::path::cache_dir;
 
@@ -12,7 +12,8 @@ pub struct App;
 
 impl App {
     /// Sets up cache dir and creates folders for each source.
-    fn setup_cache(&self) {
+    fn setup_cache(&self) -> NikaError<()> {
+        /* 
         let cache_path = cache_dir().unwrap();
 
         for source in SOURCES.iter() {
@@ -20,11 +21,19 @@ impl App {
             // Again: probably doesn't need to be handled...
             let _ = create_dir_all(path);
         }
+        */
+
+        let path =  Path::new("/tmp/posters");
+
+        if !path.exists() {
+            create_dir(path)?;
+        }
+        Ok(())
     }
 
     pub fn run(&self) -> NikaError<()> {
         // Sets up cache dir.
-        self.setup_cache();
+        self.setup_cache()?;
 
         tauri::Builder::default()
             .invoke_handler(tauri::generate_handler![search, get_sources, download_poster])
