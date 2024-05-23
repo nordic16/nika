@@ -15,7 +15,7 @@
       "http": {
         "all": true, 
         "request": true,
-        "scope": ["https://cdn.readdetectiveconan.com/*"]
+        "scope": ["https://cdn.readdetectiveconan.com/*", "data:image/jpeg;base64,*"]
       },
       "fs": {
         "all": true, 

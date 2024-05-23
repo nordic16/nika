@@ -1,4 +1,4 @@
-use std::{fmt::Debug, fs::File, io::Write};
+use std::{env::temp_dir, fmt::Debug, fs::File, io::Write};
 
 use crate::{commands::NikaError, models::comic::*, CLIENT};
 use async_trait::async_trait;
@@ -23,11 +23,15 @@ pub trait Source: Send + Sync + Debug {
     /// Returns the full path for the downloaded poster.
     async fn download_poster(&self, comic: &Comic) -> NikaError<String> {
         let mut response = CLIENT.get(comic.poster_url()).header("Referer", self.base_url()).send().await?;
-        let cache_dir = cache_dir().unwrap();
+        let tmp_dir = temp_dir();
 
         let name = comic.name().replace(' ', "_");
-        let fname = cache_dir.join(format!("nika/posters/{}/{}_poster.jpeg", self.name(), &name));
+        let fname = tmp_dir.join(format!("nika/posters/{}/{}_poster.jpeg", self.name(), &name));
         
+
+        println!("{}", fname.display());
+
+        // No need to redownload a poster...
         if !fname.exists() {
             let mut f: File = File::create(&fname).unwrap();
             
