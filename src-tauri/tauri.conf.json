@@ -28,7 +28,7 @@
         "removeFile": true,
         "renameFile": true,
         "exists": true,
-        "scope": ["$TEMP/posters/*", "var/*"]
+        "scope": ["$TEMP/**/*.jpeg"]
       },
       "os": {
         "all": true
@@ -36,7 +36,7 @@
       "protocol": {
         "all": true,
         "asset": true,
-        "assetScope": ["$TEMP/**/*.jpeg"]
+        "assetScope": ["$TEMP/**/*_poster.jpeg", "private/var/**/*.jpeg"]
       }
     },
     "bundle": {

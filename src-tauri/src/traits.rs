@@ -1,8 +1,9 @@
-use std::{env::temp_dir, fmt::Debug, fs::File, io::Write};
+use std::{env::temp_dir, fmt::Debug, io::Write};
 
 use crate::{commands::NikaError, models::comic::*, CLIENT};
 use async_trait::async_trait;
 use tauri::api::path::cache_dir;
+use tokio::{fs::{self, File}, io::AsyncWriteExt};
 
 #[async_trait]
 pub trait Source: Send + Sync + Debug {
@@ -22,23 +23,20 @@ pub trait Source: Send + Sync + Debug {
 
     /// Returns the full path for the downloaded poster.
     async fn download_poster(&self, comic: &Comic) -> NikaError<String> {
-        let mut response = CLIENT.get(comic.poster_url()).header("Referer", self.base_url()).send().await?;
         let tmp_dir = temp_dir();
-
         let name = comic.name().replace(' ', "_");
         let fname = tmp_dir.join(format!("nika/posters/{}/{}_poster.jpeg", self.name(), &name));
         
-
-        println!("{}", fname.display());
-
         // No need to redownload a poster...
         if !fname.exists() {
-            let mut f: File = File::create(&fname).unwrap();
+            let mut response: reqwest::Response = CLIENT.get(comic.poster_url()).header("Referer", self.base_url()).send().await?;
+            let mut f = File::create(&fname).await?;
             
             while let Some(chunk) = response.chunk().await? {
-                f.write_all(&chunk).unwrap();
+                f.write(&chunk).await?;
             }
         }
+        
 
         let full_path = fname.to_string_lossy();
         Ok(full_path.to_string())

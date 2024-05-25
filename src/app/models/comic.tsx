@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useState } from 'react';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { montserrat } from '../ui/fonts'
@@ -19,9 +20,13 @@ export default function ComicComponent({comic} : {comic : Comic}) {
 
     useEffect(() => {
         async function fetch_data() {
-            let path = await invoke('download_poster', { comic: comic, source_name: "Mangapill" }) as string;
+            let path = await invoke('download_poster', { comic: comic, source_name: "Mangapill" })
+                .catch(e => console.log(e)) as string;
+            
             let source = convertFileSrc(path)
             set_img(source);
+
+            
         }
         fetch_data();
     }, []);
