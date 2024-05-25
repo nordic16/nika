@@ -1,4 +1,3 @@
-'use client'
 import { useEffect, useState } from 'react';
 import { Body, ResponseType, fetch } from '@tauri-apps/api/http';
 import { montserrat } from '../ui/fonts'
@@ -29,12 +28,12 @@ export default function ComicComponent({comic} : {comic : Comic}) {
             
         }
         fetch_data();
-    }, []);
+    });
     
     return(
         <div className='relative' key={comic.id}>
             <p className='truncate max-w-64'>{comic.name}</p>
-            <img src={`${img}`} width={196} height={196} alt={''} />
+            <img src={`${img}`} width={296} alt={''} />
         </div>
     );
 }
