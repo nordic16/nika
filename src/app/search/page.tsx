@@ -34,21 +34,19 @@ export default function Search() {
     });
   }, []);
 
-  let options = <select className='text-black p-1' onChange={handle_source_change}>
+  let options = <select className='text-black p-1 max-h-10' onChange={handle_source_change}>
     {sources.map((el, index) => <option key={index}>{el}</option>)};
   </select>;
 
   return (
     <div className="md:container mx-auto">
-      <div className='flex justify-between items-center'>
-        <p className={`${montserrat.className} text-5xl font-bold mb-10`}>Nika - Search Page</p> 
-        <div className='gap-2 items-center'>
-          <input onInput={handle_search_input} className="bg-nika-secondary max-h-12 pl-2 text-lg rounded-xl" placeholder="Search Comics..."></input>
-          {options}
-        </div>
+      <p className={`${montserrat.className} text-5xl text-center font-bold mb-10`}>Nika - Search Page</p> 
+      <div className='grid grid-cols-5 gap-3 items-center'>
+        <input onInput={handle_search_input} className="bg-nika-secondary col-span-4 pl-2 text-lg p-3 rounded-3xl" placeholder="Search Comics..."></input>
+        {options}
       </div>
-      <div className="ml-2 w-full text-center">
-        <div className="mt-2 grid grid-cols-4">
+      <div className="ml-2 w-full">
+        <div className="mt-3 flex gap-3 flex-wrap justify-center">
           {components}
         </div>  
       </div>
