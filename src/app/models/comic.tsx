@@ -30,12 +30,22 @@ export default function ComicComponent({comic} : {comic : Comic}) {
         fetch_data();
     });
 
-    var p = hovering ? <motion.p whileFocus={{ scale: 1 }} className='truncate text-center absolute bottom-0 p-3 bg-nika-secondary font-semibold w-full'>{comic.name}</motion.p>
+    function on_mouse_out() {
+        set_hovering(false);
+        document.getElementById(`img-${comic.id}`)!.classList.remove('blur-sm');
+    }
+
+    function on_mouse_enter() {
+        set_hovering(true);
+        document.getElementById(`img-${comic.id}`)!.classList.add('blur-sm');
+    }
+
+    var p = hovering ? <p className='truncate text-center absolute bottom-0 p-3 bg-nika-secondary font-semibold w-full'>{comic.name}</p>
         : null;
     
         return(
-        <motion.div onMouseOut={() => set_hovering(false)} onMouseEnter={() => set_hovering(true)} whileHover={{ scale: 1.1 }} className='relative border border-2 border-gray-100' key={comic.id}>
-            <img src={`${img}`} width={340} alt={''} />
+        <motion.div onMouseOut={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1 }} className='relative border border-2 border-gray-100' key={comic.id}>
+            <img id={`img-${comic.id}`} src={`${img}`} width={340} alt={''} />
             {p}
         </motion.div>
     );

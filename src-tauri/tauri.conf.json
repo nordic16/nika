@@ -36,7 +36,7 @@
       "protocol": {
         "all": true,
         "asset": true,
-        "assetScope": ["$TEMP/**/*_poster.jpeg", "private/var/**/*.jpeg"]
+        "assetScope": ["$TEMP/**/*_poster.jpeg", "$TEMP/**/*.jpeg"]
       }
     },
     "bundle": {
