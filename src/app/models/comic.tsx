@@ -44,7 +44,7 @@ export default function ComicComponent({comic} : {comic : Comic}) {
         : null;
     
         return(
-        <motion.div onMouseOut={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1 }} className='relative border border-2 border-gray-100' key={comic.id}>
+        <motion.div onMouseLeave={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1 }} className='relative rounded-xl border border-2 border-gray-100' key={comic.id}>
             <img id={`img-${comic.id}`} src={`${img}`} width={340} alt={''} />
             {p}
         </motion.div>
