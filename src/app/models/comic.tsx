@@ -32,20 +32,22 @@ export default function ComicComponent({comic} : {comic : Comic}) {
 
     function on_mouse_out() {
         set_hovering(false);
-        document.getElementById(`img-${comic.id}`)!.classList.remove('blur-sm');
+        document.getElementById(`img-${comic.id}`)?.classList.remove('blur-sm');
     }
 
     function on_mouse_enter() {
         set_hovering(true);
-        document.getElementById(`img-${comic.id}`)!.classList.add('blur-sm');
+        document.getElementById(`img-${comic.id}`)?.classList.add('blur-sm');
     }
 
-    var p = hovering ? <p className='truncate text-center absolute bottom-0 p-3 bg-nika-secondary font-semibold w-full'>{comic.name}</p>
-        : null;
+    var p = hovering ? <motion.div style={{backdropFilter: "blur(200px)", zIndex: 1}} className='h-full backdrop-blur-md bg-gray-400/30 text-center absolute top-0 p-3 w-full'>
+            <p className='font-semibold'>{comic.name}</p>
+
+        </motion.div> : null;
     
         return(
-        <motion.div onMouseLeave={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1 }} className='relative rounded-xl border border-2 border-gray-100' key={comic.id}>
-            <img id={`img-${comic.id}`} src={`${img}`} width={340} alt={''} />
+        <motion.div onMouseLeave={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1}} className='relative rounded-xl border border-2 border-gray-100' key={comic.id}>
+            <motion.img style={{zIndex: 0}} id={`img-${comic.id}`} src={`${img}`} className='h-64 w-60' height={40} alt={''} />
             {p}
         </motion.div>
     );

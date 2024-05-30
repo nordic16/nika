@@ -39,14 +39,13 @@ export default function Search() {
   </select>;
 
   return (
-    <div className="md:container mx-auto">
-      <p className={`${montserrat.className} text-5xl text-center font-bold mb-10`}>Nika - Search Page</p> 
+    <div className='px-8'>
       <div className='grid grid-cols-5 gap-3 items-center'>
         <input onInput={handle_search_input} className="bg-nika-secondary col-span-4 pl-2 text-lg p-3 rounded-3xl" placeholder="Search Comics..."></input>
         {options}
       </div>
       <div className="ml-2 w-full">
-        <div className="mt-3 flex gap-3 flex-wrap justify-center">
+        <div className="mt-3 flex flex-wrap">
           {components}
         </div>  
       </div>
