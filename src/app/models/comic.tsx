@@ -40,14 +40,20 @@ export default function ComicComponent({comic} : {comic : Comic}) {
         document.getElementById(`img-${comic.id}`)?.classList.add('blur-sm');
     }
 
-    var p = hovering ? <motion.div style={{backdropFilter: "blur(200px)", zIndex: 1}} className='h-full backdrop-blur-md bg-gray-400/30 text-center absolute top-0 p-3 w-full'>
-            <p className='font-semibold'>{comic.name}</p>
+    var p = hovering ? <div className='h-full backdrop-blur-md bg-gray-400/30 text-center absolute top-0 p-3 w-full'>
+            <p className='font-semibold text-lg truncate'>{comic.name}</p>
 
-        </motion.div> : null;
+            <div className='mt-2 flex gap-4 justify-center'>
+                <Image src={'/images/plus_button.png'} width={36} height={36} alt={''} />
+                <Image src={'/images/info_button.png'} width={36} height={36} alt={''} />
+
+            </div>
+
+        </div> : null;
     
         return(
         <motion.div onMouseLeave={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1}} className='relative rounded-xl border border-2 border-gray-100' key={comic.id}>
-            <motion.img style={{zIndex: 0}} id={`img-${comic.id}`} src={`${img}`} className='h-64 w-60' height={40} alt={''} />
+            <img id={`img-${comic.id}`} src={`${img}`} className='h-64 w-60' height={40} alt={''} />
             {p}
         </motion.div>
     );

@@ -45,7 +45,7 @@ export default function Search() {
         {options}
       </div>
       <div className="ml-2 w-full">
-        <div className="mt-3 flex flex-wrap">
+        <div className="mt-3 flex gap-2 flex-wrap">
           {components}
         </div>  
       </div>
