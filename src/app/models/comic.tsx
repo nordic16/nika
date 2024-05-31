@@ -32,20 +32,20 @@ export default function ComicComponent({comic} : {comic : Comic}) {
 
     function on_mouse_out() {
         set_hovering(false);
-        document.getElementById(`img-${comic.id}`)?.classList.remove('blur-sm');
+        document.getElementById(`img-${comic.id}`)?.classList.remove('blur-md');
     }
 
     function on_mouse_enter() {
         set_hovering(true);
-        document.getElementById(`img-${comic.id}`)?.classList.add('blur-sm');
+        document.getElementById(`img-${comic.id}`)?.classList.add('blur-md');
     }
 
-    var p = hovering ? <div className='h-full backdrop-blur-md bg-gray-400/30 text-center absolute top-0 p-3 w-full'>
-            <p className='font-semibold text-lg truncate'>{comic.name}</p>
+    var p = hovering ? <div className='h-full bg-gray-400/30 text-center absolute top-0 p-3 w-full'>
+            <p className='font-semibold text-lg'>{comic.name}</p>
 
             <div className='mt-2 flex gap-4 justify-center'>
-                <Image src={'/images/plus_button.png'} width={36} height={36} alt={''} />
-                <Image src={'/images/info_button.png'} width={36} height={36} alt={''} />
+                <button><Image src={'/images/plus_button.png'} width={30} height={30} alt={''} /></button>
+                <a href={`/comicpage?comic=${comic}`}><Image src={'/images/info_button.png'} width={30} height={30} alt={''} /></a>
 
             </div>
 
