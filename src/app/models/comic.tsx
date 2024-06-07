@@ -1,3 +1,4 @@
+'use client'
 
 import { useEffect, useState } from 'react';
 import { convertFileSrc, invoke } from '@tauri-apps/api/tauri';

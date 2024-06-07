@@ -22,6 +22,10 @@ impl Comic {
         &self.name
     }
 
+    pub fn source<'a>(&'a self) -> &'a str {
+        &self.source
+    }
+
     pub fn poster_url<'a>(&'a self) -> &'a str {
         &self.poster_url
     }
@@ -38,24 +42,6 @@ impl Chapter {
         Self {
             name: name.to_owned(),
             source: source.to_owned(),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Default)]
-pub struct ComicInfo {
-    // might change later.
-    pub date: String,
-    pub status: String,
-    pub genres: Vec<String>,
-}
-
-impl ComicInfo {
-    pub fn new(date: &str, status: &str, genres: Vec<String>) -> Self {
-        Self {
-            date: date.to_owned(),
-            status: status.to_owned(),
-            genres,
         }
     }
 }

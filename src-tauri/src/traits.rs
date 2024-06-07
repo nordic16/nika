@@ -6,7 +6,7 @@ use tauri::api::path::cache_dir;
 use tokio::{fs::{self, File}, io::AsyncWriteExt};
 
 #[async_trait]
-pub trait Source: Send + Sync + Debug {
+pub trait Source: Send + Sync {
     /// Returns a list of search results based on query
     async fn search(&self, query: &str) -> NikaError<Vec<Comic>>;
 
@@ -15,11 +15,11 @@ pub trait Source: Send + Sync + Debug {
     /// Returns the chapters for a given comic
     async fn get_chapters(&self, comic: &Comic) -> NikaError<Vec<Chapter>>;
 
-    async fn get_info(&self, comic: &Comic) -> NikaError<Option<ComicInfo>>;
-
     fn name(&self) -> &'static str;
 
     fn clone_dyn(&self) -> Box<dyn Source>;
+
+    async fn get_description(&self, comic: &Comic) -> NikaError<String>;
 
     /// Returns the full path for the downloaded poster.
     async fn download_poster(&self, comic: &Comic) -> NikaError<String> {

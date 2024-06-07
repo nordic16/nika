@@ -1,5 +1,5 @@
 use crate::commands::NikaError;
-use crate::models::comic::{Chapter, Comic, ComicInfo};
+use crate::models::comic::{Chapter, Comic};
 use crate::traits::Source;
 use crate::CLIENT;
 use async_trait::async_trait;
@@ -69,16 +69,20 @@ impl Source for MangapillSource {
         todo!()
     }
 
-    async fn get_info(&self, comic: &Comic) -> NikaError<Option<ComicInfo>> {
-        todo!()
-    }
-
     fn name(&self) -> &'static str {
         "Mangapill"
     }
 
     fn clone_dyn(&self) -> Box<dyn Source> {
         Box::new(self.clone())
+    }
+
+    async fn get_description(&self, comic: &Comic) -> NikaError<String> {
+        let text = CLIENT.get(comic.source()).send().await?.text().await?;
+        let parser = Soup::new(&text);
+        let desc = parser.class("text-sm").find().unwrap().text();
+
+        Ok(desc)
     }
 }
 
