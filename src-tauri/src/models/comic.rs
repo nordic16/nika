@@ -18,15 +18,15 @@ impl Comic {
         }
     }
 
-    pub fn name<'a>(&'a self) -> &'a str {
+    pub fn name(&self) -> &str {
         &self.name
     }
 
-    pub fn source<'a>(&'a self) -> &'a str {
+    pub fn source(&self) -> &str {
         &self.source
     }
 
-    pub fn poster_url<'a>(&'a self) -> &'a str {
+    pub fn poster_url(&self) -> &str {
         &self.poster_url
     }
 }
@@ -35,6 +35,28 @@ impl Comic {
 pub struct Chapter {
     name: String,
     source: String,
+}
+
+#[derive(Clone, Debug, Serialize)]
+pub enum Status {
+    FINISHED,
+    ONGOING,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct ComicInfo {
+    // some sources don't include authors lmfao
+    author: Option<String>,
+    // rating: Option<String>,
+    status: String,
+    genres: Option<Vec<String>>,
+    description: Option<String>
+}
+
+impl ComicInfo {
+    pub fn new(author: Option<String>, status: &str, genres: Option<Vec<String>>, description: Option<String>) -> Self {
+        Self { author, status: status.to_owned(), genres, description }
+    }
 }
 
 impl Chapter {

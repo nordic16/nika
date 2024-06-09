@@ -13,6 +13,21 @@ export interface Comic {
     id: number,
 }
 
+enum Status {
+    FINISHED,
+    ONGOING,
+}
+
+export interface ComicInfo {
+    // some sources don't include authors lmfao
+    author: String | null,
+    // rating: Option<String>,
+    status: Status,
+    genres: String[] | null,
+    description: String | null
+}
+
+
 export default function ComicComponent({comic} : {comic : Comic}) {  
     const [img, set_img] = useState('');
     const [hovering, set_hovering] = useState(false);

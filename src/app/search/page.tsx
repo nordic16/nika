@@ -22,6 +22,7 @@ export default function Search() {
   function handle_source_change(evt: ChangeEvent<HTMLSelectElement>) {
     const index = evt.target.selectedIndex;
     set_sel_source(sources[index]);
+    localStorage.setItem('source', sources[index]);
 
     console.log(`Set source to ${sources[index]}!`);
   }

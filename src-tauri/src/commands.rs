@@ -1,7 +1,7 @@
 use std::io;
 
 use thiserror::Error;
-use crate::{models::comic::Comic, SOURCES};
+use crate::{models::comic::{Comic, ComicInfo}, SOURCES};
 
 #[derive(Error, Debug)]
 pub enum Errors {
@@ -43,6 +43,12 @@ pub async fn search(query: String, source: String) -> NikaError<Vec<Comic>> {
     */
 
     Ok(results)
+}
+
+#[tauri::command]
+pub async fn get_comic_info(comic: Comic, source: String) -> NikaError<ComicInfo> {
+  let source = SOURCES.iter().find(|f| f.name().to_lowercase() == source.to_lowercase()).unwrap();
+  source.get_comic_info(&comic).await
 }
 
 

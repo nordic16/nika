@@ -29,7 +29,7 @@ impl App {
         self.setup_cache()?;
 
         tauri::Builder::default()
-            .invoke_handler(tauri::generate_handler![search, get_sources, download_poster])
+            .invoke_handler(tauri::generate_handler![search, get_sources, download_poster, get_comic_info])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");
         

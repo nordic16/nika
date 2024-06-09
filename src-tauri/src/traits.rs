@@ -19,8 +19,6 @@ pub trait Source: Send + Sync {
 
     fn clone_dyn(&self) -> Box<dyn Source>;
 
-    async fn get_description(&self, comic: &Comic) -> NikaError<String>;
-
     /// Returns the full path for the downloaded poster.
     async fn download_poster(&self, comic: &Comic) -> NikaError<String> {
         let tmp_dir = temp_dir();
@@ -41,6 +39,10 @@ pub trait Source: Send + Sync {
         let full_path = fname.to_string_lossy();
         Ok(full_path.to_string())
     }
+
+    async fn get_comic_info(&self, comic: &Comic) -> NikaError<ComicInfo>;
+
+
 }
 
 impl Clone for Box<dyn Source> {
