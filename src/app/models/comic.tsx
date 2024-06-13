@@ -27,6 +27,10 @@ export interface ComicInfo {
     description: String | null
 }
 
+export interface Chapter {
+    name: String,
+    source: String,
+}
 
 export default function ComicComponent({comic} : {comic : Comic}) {  
     const [img, set_img] = useState('');

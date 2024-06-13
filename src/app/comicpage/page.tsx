@@ -1,9 +1,9 @@
 'use client'
 
 import { useSearchParams } from "next/navigation";
-import { Comic, ComicInfo } from "../models/comic";
+import { Chapter, Comic, ComicInfo } from "../models/comic";
 import { montserrat } from '../ui/fonts'; 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
 
 
@@ -14,6 +14,7 @@ export default function ComicPage() {
   
   const [loading, set_loading] = useState(true);
   const [description, set_description] = useState(String);
+  const [chapters, set_chapters] = useState(Array<React.JSX.Element>);
 
   useEffect(() => {
     async function get_info() {
@@ -21,20 +22,28 @@ export default function ComicPage() {
 
       console.log(source);
 
-      const result = await invoke('get_comic_info', { source: 'mangapill', comic: comic }).catch(e => console.log(e));
-      console.log(JSON.stringify(result));
-      let info = JSON.parse(JSON.stringify(result)) as ComicInfo;
+      const info_res = await invoke('get_comic_info', { source: 'mangapill', comic: comic }).catch(e => console.log(e));
+      const chapters_res = await invoke('get_chapters', { source: 'mangapill', comic: comic}).catch(e => console.log(e));
+      
+      const info = JSON.parse(JSON.stringify(info_res)) as ComicInfo;
+      const chapters_raw = JSON.parse(JSON.stringify(chapters_res)) as Chapter[];
     
       const desc = info.description! as string;
 
+      // processing chapters
+      const chapters = chapters_raw.map(ch => <div className="p-1"><p className="max-h-32 truncate">{ch.name}</p></div>)
+
       set_description(desc);
+      set_chapters(chapters);
       set_loading(false);      
     }
 
     get_info();
   });
 
-  var body = !loading ? (<div className="flex px-12">
+
+  // goofy ahh code
+  var body = !loading ? (<div className="flex">
     <img className="basis-4/12 rounded-xl grow-1" src={img} alt={''}></img>
     <div className="basis-8/12 lg:ml-12 ml-8 py-4">
       <p className={`text-4xl md:text-5xl font-bold ${montserrat.className}`}>{comic?.name}</p>
@@ -49,13 +58,16 @@ export default function ComicPage() {
         <p className="">{description}</p>
       </div>
   
-      <div className="ml-2 mt-4 bg-nika-secondary py-4 px-8 rounded-xl">
+      <div className="ml-2 mt-4 bg-nika-secondary py-4 px-8 rounded-xl max-h-96 overflow-scroll">
         <p className={`${montserrat.className} text-xl md:text-2xl font-bold text-center mb-2`}>Chapter List</p>
+        <div className="flex flex-wrap justify-between">
+          {chapters}
+        </div>
       </div>
     </div>
   
   
-    </div>) : <div className="relative"><p className={`${montserrat.className} text-4xl text-center  absolute font-extrabold bottom-[50%]`}>Loading...</p></div>
+    </div>) : <div><p className={`${montserrat.className} text-center h-full w-full text-7xl absolute font-extrabold`}>Loading...</p></div>
 
   return body;
 }

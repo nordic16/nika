@@ -1,7 +1,7 @@
 use std::io;
 
 use thiserror::Error;
-use crate::{models::comic::{Comic, ComicInfo}, SOURCES};
+use crate::{models::comic::{Chapter, Comic, ComicInfo}, SOURCES};
 
 #[derive(Error, Debug)]
 pub enum Errors {
@@ -12,7 +12,7 @@ pub enum Errors {
     IOError(#[from] io::Error)
 }
 
-// we must manually implement serde::Serialize
+// serde::Serialize must be manually implemented.
 impl serde::Serialize for Errors {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -63,4 +63,12 @@ pub async fn download_poster(comic: Comic, source_name: String) -> NikaError<Str
   let source = &results[0];
 
   source.download_poster(&comic).await
+}
+
+#[tauri::command(rename_all = "snake_case")]
+pub async fn get_chapters(comic: Comic, source: String) -> NikaError<Vec<Chapter>> {
+  let results : Vec<_> = SOURCES.iter().filter(|f| f.name().to_lowercase() == source.to_lowercase()).collect();
+  let source = &results[0];
+
+  source.get_chapters(&comic).await
 }

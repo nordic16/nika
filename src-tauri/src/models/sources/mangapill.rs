@@ -66,7 +66,18 @@ impl Source for MangapillSource {
     }
 
     async fn get_chapters(&self, comic: &Comic) -> NikaError<Vec<Chapter>> {
-        todo!()
+        let base_url = self.base_url();
+
+        let manga_page = CLIENT.get(comic.source()).send().await?.text().await?;
+        let soup = Soup::new(&manga_page);
+
+        let chapter_urls: Vec<_> = soup.tag("a").class("border-border").find_all().collect();
+        let chapters: Vec<Chapter> = chapter_urls
+            .into_iter()
+            .map(|f| Chapter::new(&f.text(), &format!("{base_url}{}", f.get("href").unwrap())))
+            .collect();
+
+        Ok(chapters)
     }
 
     fn name(&self) -> &'static str {

@@ -31,7 +31,7 @@ impl Comic {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug, Clone, Serialize)]
 pub struct Chapter {
     name: String,
     source: String,
