@@ -13,16 +13,12 @@ export interface Comic {
     id: number,
 }
 
-enum Status {
-    FINISHED,
-    ONGOING,
-}
 
 export interface ComicInfo {
     // some sources don't include authors lmfao
     author: String | null,
     // rating: Option<String>,
-    status: Status,
+    status: String,
     genres: String[] | null,
     description: String | null
 }
@@ -70,7 +66,7 @@ export default function ComicComponent({comic} : {comic : Comic}) {
         </div> : null;
     
         return(
-        <motion.div onMouseLeave={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1}} className='relative rounded-xl border border-2 border-gray-100' key={comic.id}>
+        <motion.div onMouseLeave={() => on_mouse_out()} onMouseEnter={() => on_mouse_enter()} whileHover={{ scale: 1.1 }} className='relative rounded-xl border border-2 border-gray-100' key={comic.id}>
             <img id={`img-${comic.id}`} src={`${img}`} className='h-64 w-60' height={40} alt={''} />
             {div}
         </motion.div>

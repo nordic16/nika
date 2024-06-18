@@ -37,12 +37,6 @@ pub struct Chapter {
     source: String,
 }
 
-#[derive(Clone, Debug, Serialize)]
-pub enum Status {
-    FINISHED,
-    ONGOING,
-}
-
 #[derive(Debug, Clone, Serialize)]
 pub struct ComicInfo {
     // some sources don't include authors lmfao

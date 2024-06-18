@@ -15,6 +15,7 @@ export default function ComicPage() {
   const [loading, set_loading] = useState(true);
   const [description, set_description] = useState(String);
   const [chapters, set_chapters] = useState(Array<React.JSX.Element>);
+  const [status, set_status] = useState(String); 
 
   useEffect(() => {
     async function get_info() {
@@ -34,8 +35,9 @@ export default function ComicPage() {
       const chapters = chapters_raw.map(ch => <div className="p-1 mx-1"><p className="font-semibold truncate transition ease-in-out hover:text-nika-blue-primary">{ch.name}</p></div>)
 
       set_description(desc);
-      set_chapters(chapters);
-      set_loading(false);      
+      set_chapters(chapters.reverse());
+      set_status(info.status.toString());
+      set_loading(false);      // TODO: find better way to implement a loading screen lol.
     }
 
     get_info();
@@ -44,11 +46,11 @@ export default function ComicPage() {
 
   // goofy ahh code
   var body = !loading ? (<div className="flex">
-    <img className="basis-4/12 rounded-xl grow-1" src={img} alt={''}></img>
-    <div className="basis-8/12 lg:ml-12 ml-8 py-4">
+    <img className="basis-3/12 lg:basis-4/12 rounded-xl grow-1" src={img} alt={''}></img>
+    <div className="basis-9/12 lg:basis-8/12 lg:ml-12 ml-8 py-4">
       <p className={`text-4xl md:text-5xl font-bold ${montserrat.className}`}>{comic?.name}</p>
       <div className={`flex mt-1 ml-2 gap-2 ${montserrat.className}`}>
-        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-green">Ongoing</p>
+        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-green">{status}</p>
         <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-red">Seinen</p>
         <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-purple">Shonen</p>
       </div>
@@ -60,12 +62,11 @@ export default function ComicPage() {
   
       <div className="ml-2 mt-4 bg-nika-secondary py-4 px-8 rounded-xl max-h-96 overflow-scroll">
         <p className={`${montserrat.className} text-xl md:text-2xl font-bold text-center mb-2`}>Chapter List</p>
-        <div className="flex flex-wrap justify-between">
+        <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 text-center">
           {chapters}
         </div>
       </div>
     </div>
-  
   
     </div>) : <div><p className={`${montserrat.className} text-center h-full w-full text-7xl absolute font-extrabold`}>Loading...</p></div>
 

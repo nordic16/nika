@@ -1,5 +1,5 @@
 use crate::commands::NikaError;
-use crate::models::comic::{Chapter, Comic, ComicInfo, Status};
+use crate::models::comic::{Chapter, Comic, ComicInfo};
 use crate::traits::Source;
 use crate::CLIENT;
 use async_trait::async_trait;
@@ -92,6 +92,8 @@ impl Source for MangapillSource {
         let text = CLIENT.get(comic.source()).send().await?.text().await?;
         let parser = Soup::new(&text);
         let desc = parser.class("text-sm").find().unwrap().text();
+
+        let query: Vec<_> = parser.class("text-secondary").find_all().collect();
 
         Ok(ComicInfo::new(None, "ongoing", Some(vec![String::from("a")]), Some(desc)))
     }
