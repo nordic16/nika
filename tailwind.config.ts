@@ -19,9 +19,13 @@ const config: Config = {
           secondary: "#141414",
           primary: "#050505",
 
-          selected: {
+          blue: {
             primary: "#00BDDE",
           },
+          green: "#10B981",
+          red: "#FF5555",
+          purple: "#B380FF",
+
         }
       }
     },

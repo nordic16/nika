@@ -12,13 +12,13 @@ export default function RootLayout({
       <body className="bg-nika-primary antialised">
         <div className={`${montserrat.className} bg-nika-secondary py-2 m-2 rounded-3xl flex justify-between mb-8`}>
           <div className="font-bold md:text-xl text-lg">
-            <Link href="/" className="mx-4 hover:text-nika-selected-primary transition ease-in-out">Home</Link>
+            <Link href="/" className="mx-4 hover:text-nika-blue-primary transition ease-in-out">Home</Link>
           </div>
 
           <div className="font-bold md:text-xl text-lg">
-            <Link href="/search/" className="mx-4 transition ease-in-out hover:text-nika-selected-primary">Search</Link>  
-            <Link href="#" className="mx-4 transition ease-in-out hover:text-nika-selected-primary">Settings</Link>
-            <Link href="#" className="mx-4 transition ease-in-out text-nika-selected-primary">X</Link> 
+            <Link href="/search/" className="mx-4 transition ease-in-out hover:text-nika-blue-primary">Search</Link>  
+            <Link href="#" className="mx-4 transition ease-in-out hover:text-nika-blue-primary">Settings</Link>
+            <Link href="#" className="mx-4 transition ease-in-out text-nika-blue-primary">X</Link> 
           </div>
         </div>
         <div className="mx-12">

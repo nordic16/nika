@@ -31,7 +31,7 @@ export default function ComicPage() {
       const desc = info.description! as string;
 
       // processing chapters
-      const chapters = chapters_raw.map(ch => <div className="p-1"><p className="max-h-32 truncate">{ch.name}</p></div>)
+      const chapters = chapters_raw.map(ch => <div className="p-1 mx-1"><p className="font-semibold truncate transition ease-in-out hover:text-nika-blue-primary">{ch.name}</p></div>)
 
       set_description(desc);
       set_chapters(chapters);
@@ -48,9 +48,9 @@ export default function ComicPage() {
     <div className="basis-8/12 lg:ml-12 ml-8 py-4">
       <p className={`text-4xl md:text-5xl font-bold ${montserrat.className}`}>{comic?.name}</p>
       <div className={`flex mt-1 ml-2 gap-2 ${montserrat.className}`}>
-        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-[#10B981]">Ongoing</p>
-        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-[#FF5555]">Seinen</p>
-        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-[#B380FF]">Shonen</p>
+        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-green">Ongoing</p>
+        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-red">Seinen</p>
+        <p className="py-2 px-4 bg-nika-secondary rounded-xl font-semibold md:text-lg text-nika-purple">Shonen</p>
       </div>
   
       <div className="ml-2 w-full mt-4 bg-nika-secondary hidden xl:block py-4 px-8 rounded-xl">
