@@ -32,7 +32,9 @@ export default function ComicPage() {
       const desc = info.description! as string;
 
       // processing chapters
-      const chapters = chapters_raw.map(ch => <div className="p-1 mx-1"><p className="font-semibold truncate transition ease-in-out hover:text-nika-blue-primary">{ch.name}</p></div>)
+      const chapters = chapters_raw.map(ch => <div className="p-1 mx-1">
+        <a href="/chapterpage" className="font-semibold truncate transition ease-in-out hover:text-nika-blue-primary">{ch.name}</a>
+        </div>)
 
       set_description(desc);
       set_chapters(chapters.reverse());
@@ -68,6 +70,7 @@ export default function ComicPage() {
       </div>
     </div>
   
+    { /* Loading screen */ }
     </div>) : <div><p className={`${montserrat.className} text-center h-full w-full text-7xl absolute font-extrabold`}>Loading...</p></div>
 
   return body;
