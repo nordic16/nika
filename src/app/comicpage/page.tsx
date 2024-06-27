@@ -1,10 +1,11 @@
 'use client'
 
 import { useSearchParams } from "next/navigation";
-import { Chapter, Comic, ComicInfo } from "../models/comic";
+import { Comic, ComicInfo } from "../models/comic";
 import { montserrat } from '../ui/fonts'; 
 import React, { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api";
+import ChapterComponent, { Chapter } from "./chapter";
 
 
 export default function ComicPage() {
@@ -14,7 +15,7 @@ export default function ComicPage() {
   
   const [loading, set_loading] = useState(true);
   const [description, set_description] = useState(String);
-  const [chapters, set_chapters] = useState(Array<React.JSX.Element>);
+  const [chapters, set_chapters] = useState(Array<Chapter>);
   const [status, set_status] = useState(String); 
 
   useEffect(() => {
@@ -27,15 +28,11 @@ export default function ComicPage() {
       const chapters_res = await invoke('get_chapters', { source: 'mangapill', comic: comic}).catch(e => console.log(e));
       
       const info = JSON.parse(JSON.stringify(info_res)) as ComicInfo;
-      const chapters_raw = JSON.parse(JSON.stringify(chapters_res)) as Chapter[];
+      const chapters = JSON.parse(JSON.stringify(chapters_res)) as Chapter[];
     
       const desc = info.description! as string;
 
       // processing chapters
-      const chapters = chapters_raw.map(ch => <div className="p-1 mx-1">
-        <a href="/chapterpage" className="font-semibold truncate transition ease-in-out hover:text-nika-blue-primary">{ch.name}</a>
-        </div>)
-
       set_description(desc);
       set_chapters(chapters.reverse());
       set_status(info.status.toString());
@@ -65,7 +62,7 @@ export default function ComicPage() {
       <div className="ml-2 mt-4 bg-nika-secondary py-4 px-8 rounded-xl max-h-96 overflow-scroll">
         <p className={`${montserrat.className} text-xl md:text-2xl font-bold text-center mb-2`}>Chapter List</p>
         <div className="grid grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 text-center">
-          {chapters}
+          {chapters.map(ch => <ChapterComponent chapter={ch} />)}
         </div>
       </div>
     </div>
