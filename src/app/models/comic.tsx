@@ -36,7 +36,7 @@ export default function ComicComponent({comic} : {comic : Comic}) {
             set_img(source);           
         }
         fetch_data();
-    });
+    }, []);
 
     function on_mouse_out() {
         set_hovering(false);
