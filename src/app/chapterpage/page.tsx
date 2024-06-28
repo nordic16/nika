@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation"
 import { Chapter } from "../comicpage/chapter";
+import { montserrat } from "../ui/fonts";
 
 export default function ChapterPage() {
 
@@ -10,7 +11,10 @@ export default function ChapterPage() {
 
     return (
         <div>
-            <p className="text-5xl">{chapter.name}</p>
+            <p className={`text-5xl text-center ${montserrat.className} font-bold`}>{chapter.name}</p>
+            <div className="w-full h-full bg-red-500 mt-2">
+                
+            </div>
         </div>
     )
 }

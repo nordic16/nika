@@ -4,8 +4,8 @@ const nextConfig = {
         remotePatterns: [
             {
                 hostname: 'localhost',
-                pathname: '/**/*.jpeg',
-                port: '',
+                pathname: '/tmp/nika/**',
+                port: '3000',
                 protocol: 'https',
             }
         ]

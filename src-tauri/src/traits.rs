@@ -26,7 +26,8 @@ pub trait Source: Send + Sync {
         let fname = tmp_dir.join(format!("nika/posters/{}/{}_poster.jpeg", self.name(), &name));
         
         // No need to redownload a poster...
-        if !fname.exists() {
+        
+         if !fname.exists() {
             let mut response: reqwest::Response = CLIENT.get(comic.poster_url()).header("Referer", self.base_url()).send().await?;
             let mut f = File::create(&fname).await?;
             
