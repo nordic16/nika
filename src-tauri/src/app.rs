@@ -1,10 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::{env::temp_dir, fs::{create_dir, create_dir_all}, path::Path};
-
-use tauri::api::path::cache_dir;
-
+use std::{env::temp_dir, fs::create_dir_all};
 use crate::{commands::*, SOURCES};
 
 #[derive(Default)]

@@ -1,9 +1,8 @@
-use std::{env::temp_dir, fmt::Debug, io::Write};
+use std::env::temp_dir;
 
 use crate::{commands::NikaError, models::comic::*, CLIENT};
 use async_trait::async_trait;
-use tauri::api::path::cache_dir;
-use tokio::{fs::{self, File}, io::AsyncWriteExt};
+use tokio::{fs::File, io::AsyncWriteExt};
 
 #[async_trait]
 pub trait Source: Send + Sync {

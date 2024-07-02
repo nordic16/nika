@@ -93,8 +93,6 @@ impl Source for MangapillSource {
         let parser = Soup::new(&text);
         let desc = parser.class("text-sm").find().unwrap().text();
 
-        let query: Vec<_> = parser.class("text-secondary").find_all().collect();
-
         Ok(ComicInfo::new(None, "ongoing", Some(vec![String::from("a")]), Some(desc)))
     }
 }
