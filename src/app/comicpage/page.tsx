@@ -40,7 +40,7 @@ export default function ComicPage() {
     }
 
     get_info();
-  });
+  }, []);
 
 
   // goofy ahh code
